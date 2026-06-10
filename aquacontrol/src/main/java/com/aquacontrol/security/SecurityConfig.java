@@ -101,7 +101,8 @@ public class SecurityConfig {
         config.setAllowedOrigins(List.of(
                 "http://localhost:3000",
                 "http://localhost:5173",
-                "https://aquacontrol-frontend.vercel.app"  // actualizar con URL real de Vercel después
+                "http://localhost",
+                "https://aquacontrol-frontend.onrender.com"
         ));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
