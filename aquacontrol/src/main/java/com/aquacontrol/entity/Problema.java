@@ -1,6 +1,5 @@
 package com.aquacontrol.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -28,7 +27,7 @@ public class Problema {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_hogar", nullable = false)
-    @JsonProperty(access = WRITE_ONLY) //Resolviendo problema de interfaz
+    @JsonProperty(access = WRITE_ONLY)
     private Hogar hogar;
 
     @NotBlank(message = "La descripción es obligatoria")

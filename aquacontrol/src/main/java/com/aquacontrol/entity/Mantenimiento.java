@@ -1,5 +1,6 @@
 package com.aquacontrol.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -7,6 +8,8 @@ import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 
 import java.time.LocalDate;
+
+import static com.fasterxml.jackson.annotation.JsonProperty.Access.WRITE_ONLY;
 
 @Entity
 @Table(name = "mantenimiento")
@@ -22,6 +25,7 @@ public class Mantenimiento {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_problema", nullable = false)
+    @JsonProperty(access = WRITE_ONLY)
     private Problema problema;
 
     @NotNull(message = "La fecha es obligatoria")
@@ -44,7 +48,7 @@ public class Mantenimiento {
     }
 
     public enum TipoActividad {
-        TECNICO,       // Realizado por el técnico (mantenimiento físico)
-        ADMINISTRATIVO // Registrado por el comité (actividad administrativa)
+        TECNICO,
+        ADMINISTRATIVO
     }
 }
