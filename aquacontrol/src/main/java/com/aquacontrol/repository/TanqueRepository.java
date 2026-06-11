@@ -10,6 +10,6 @@ import java.util.Optional;
 @Repository
 public interface TanqueRepository extends JpaRepository<Tanque, Long> {
     // Obtener el registro de tanque más reciente
-    @Query("SELECT t FROM Tanque t ORDER BY t.fecha DESC")
+    @Query("SELECT t FROM Tanque t ORDER BY t.fecha DESC LIMIT 1")
     Optional<Tanque> findUltimoRegistro();
 }
