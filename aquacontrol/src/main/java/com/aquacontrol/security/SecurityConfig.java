@@ -55,41 +55,39 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-            .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-            .csrf(csrf -> csrf.disable())
-            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            .authorizeHttpRequests(auth -> auth
-                // Público: solo login
-                .requestMatchers("/api/auth/**").permitAll()
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                .csrf(csrf -> csrf.disable())
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/api/auth/**").permitAll()
 
-                // COMITÉ: acceso total
-                .requestMatchers("/api/hogares/**").hasAnyRole("COMITE", "TECNICO", "REPRESENTANTE")
-                .requestMatchers(HttpMethod.POST, "/api/hogares").hasRole("COMITE")
-                .requestMatchers(HttpMethod.PUT, "/api/hogares/**").hasRole("COMITE")
-                .requestMatchers(HttpMethod.DELETE, "/api/hogares/**").hasRole("COMITE")
+                        .requestMatchers("/api/hogares/**").hasAnyRole("COMITE", "TECNICO", "REPRESENTANTE")
+                        .requestMatchers(HttpMethod.POST, "/api/hogares").hasRole("COMITE")
+                        .requestMatchers(HttpMethod.PUT, "/api/hogares/**").hasRole("COMITE")
+                        .requestMatchers(HttpMethod.DELETE, "/api/hogares/**").hasRole("COMITE")
 
-                .requestMatchers(HttpMethod.POST, "/api/aportes").hasRole("COMITE")
-                .requestMatchers(HttpMethod.GET, "/api/aportes/**").hasAnyRole("COMITE", "REPRESENTANTE")
+                        .requestMatchers(HttpMethod.POST, "/api/aportes").hasRole("COMITE")
+                        .requestMatchers(HttpMethod.GET, "/api/aportes/**").hasAnyRole("COMITE", "REPRESENTANTE")
 
-                .requestMatchers(HttpMethod.POST, "/api/problemas").hasAnyRole("COMITE", "REPRESENTANTE")
-                .requestMatchers(HttpMethod.GET, "/api/problemas/**").hasAnyRole("COMITE", "TECNICO")
-                .requestMatchers(HttpMethod.PUT, "/api/problemas/**").hasAnyRole("COMITE", "TECNICO")
+                        .requestMatchers(HttpMethod.POST, "/api/problemas").hasAnyRole("COMITE", "REPRESENTANTE")
+                        .requestMatchers(HttpMethod.GET, "/api/problemas/**").hasAnyRole("COMITE", "TECNICO")
+                        .requestMatchers(HttpMethod.PUT, "/api/problemas/**").hasAnyRole("COMITE", "TECNICO")
 
-                .requestMatchers("/api/mantenimiento/**").hasAnyRole("COMITE", "TECNICO")
+                        .requestMatchers("/api/mantenimiento/**").hasAnyRole("COMITE", "TECNICO")
 
-                .requestMatchers(HttpMethod.POST, "/api/distribucion").hasRole("COMITE")
-                .requestMatchers(HttpMethod.GET, "/api/distribucion/**").hasAnyRole("COMITE", "REPRESENTANTE")
+                        .requestMatchers(HttpMethod.POST, "/api/distribucion").hasRole("COMITE")
+                        .requestMatchers(HttpMethod.GET, "/api/distribucion/**").hasAnyRole("COMITE", "REPRESENTANTE")
 
-                .requestMatchers("/api/tanque/**").hasAnyRole("COMITE", "TECNICO")
+                        .requestMatchers("/api/tanque/**").hasAnyRole("COMITE", "TECNICO")
 
-                .requestMatchers("/api/avisos/**").hasAnyRole("COMITE", "REPRESENTANTE")
-                .requestMatchers(HttpMethod.POST, "/api/avisos").hasRole("COMITE")
+                        .requestMatchers("/api/avisos/**").hasAnyRole("COMITE", "REPRESENTANTE")
+                        .requestMatchers(HttpMethod.POST, "/api/avisos").hasRole("COMITE")
 
-                .requestMatchers("/api/usuarios/**").hasRole("COMITE")
-                .requestMatchers("/api/reportes/**").hasRole("COMITE")
+                        .requestMatchers("/api/usuarios/**").hasRole("COMITE")
+                        .requestMatchers("/api/reportes/**").hasRole("COMITE")
 
-                .anyRequest().authenticated()
-            );
+                        .anyRequest().authenticated()
+                );
 
         http.authenticationProvider(authenticationProvider());
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
@@ -100,7 +98,13 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of("http://localhost:3000", "http://localhost:5173"));        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        config.setAllowedOrigins(List.of(
+                "http://localhost:3000",
+                "http://localhost:5173",
+                "http://localhost",
+                "https://aquacontrol-frontend.onrender.com"
+        ));
+        config.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
         config.setAllowCredentials(true);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

@@ -1,12 +1,12 @@
 package com.aquacontrol.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
-
 import java.util.List;
 
 @Entity
@@ -42,17 +42,20 @@ public class Hogar {
     @Column(name = "estado", nullable = false, length = 20)
     private EstadoHogar estado = EstadoHogar.ACTIVO;
 
-    // Relaciones
     @OneToMany(mappedBy = "hogar", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnoreProperties("hogar")
     private List<Aporte> aportes;
 
     @OneToMany(mappedBy = "hogar", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnoreProperties("hogar")
     private List<Problema> problemas;
 
     @OneToMany(mappedBy = "hogar", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnoreProperties("hogar")
     private List<Usuario> usuarios;
 
     @OneToMany(mappedBy = "hogar", fetch = FetchType.LAZY)
+    @JsonIgnoreProperties("hogar")
     private List<Aviso> avisos;
 
     public enum EstadoHogar {
